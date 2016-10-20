@@ -21,7 +21,10 @@ namespace low_cost
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            string origin = comboBox1.GetItemText(this.comboBox1.SelectedItem);
+            string destination = comboBox2.GetItemText(this.comboBox2.SelectedItem);
+            string date = dateTimePicker1.Value.ToShortDateString().ToString();
+            int passengers = Int32.Parse(textBox1.Text);
         }
     }
 }
