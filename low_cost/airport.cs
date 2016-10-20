@@ -77,7 +77,7 @@ namespace low_cost
 
             protected void setString(Airport origin, Airport destination)
             {
-                string apikey = "apikey=YQGzMuqt1UQXZBrmRAZO250tS1j1sFBQ" + "&";
+                string apikey = "apikey= inser API key" + "&";
                 string ori = "origin=" + origin.AirportIata + "&";
                 string des = "destination=" + destination.AirportIata + "&";
                 string tim = "departure_date=" + origin.Date + "&";
