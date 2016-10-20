@@ -186,4 +186,28 @@ namespace low_cost
         //     Display data from local db
         //     concept: get id from query, get saved data by id, display it
     }
+    static class LoadComboBox
+    {
+        public static void Set(ref System.Windows.Forms.ComboBox comboBox)
+        {
+            string connetionString = null;
+            SqlConnection connection;
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            DataSet ds = new DataSet();
+            string sql = null;
+            connetionString = low_cost.Properties.Settings.Default.iataConnectionString;
+            sql = "select airport AS name from iata_airport_codes";
+            connection = new SqlConnection(connetionString);
+            connection.Open();
+            command = new SqlCommand(sql, connection);
+            adapter.SelectCommand = command;
+            adapter.Fill(ds);
+            adapter.Dispose();
+            command.Dispose();
+            connection.Close();
+            comboBox.DataSource = ds.Tables[0];
+            comboBox.DisplayMember = "name";
+        }
+    }
 }

@@ -15,6 +15,13 @@ namespace low_cost
         public Form1()
         {
             InitializeComponent();
+            LoadComboBox.Set(ref comboBox1);
+            LoadComboBox.Set(ref comboBox2);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
