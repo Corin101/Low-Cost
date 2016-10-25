@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,14 +18,17 @@ namespace low_cost
             InitializeComponent();
             LoadComboBox.Set(ref comboBox1);
             LoadComboBox.Set(ref comboBox2);
-        }
 
+        }
         private void button1_Click(object sender, EventArgs e)
         {
-            string origin = comboBox1.GetItemText(this.comboBox1.SelectedItem);
-            string destination = comboBox2.GetItemText(this.comboBox2.SelectedItem);
-            string date = dateTimePicker1.Value.ToShortDateString().ToString();
-            int passengers = Int32.Parse(textBox1.Text);
-        }
+            Airport data = new Airport();
+            data.Origin = comboBox1.GetItemText(comboBox1.SelectedItem);
+            data.Destination = comboBox2.GetItemText(comboBox2.SelectedItem);
+            data.DepartureDate = dateTimePicker1.Value.ToShortDateString().ToString();
+            data.Passengers = Int32.Parse(textBox1.Text);
+            SendHttpRequest newQuery = new SendHttpRequest();
+            newQuery.send(data);
+        }                                               
     }
 }

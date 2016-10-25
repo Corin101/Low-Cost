@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Data.SqlClient;
 using System.Data;
+using System.Windows.Forms;
 
 namespace low_cost
 {
@@ -11,107 +12,135 @@ namespace low_cost
     /// </summary>
     class Airport
     {
-        protected string airportName;
-        protected string iata;
-        protected DateTime time;
-        protected uint passengers;
+        protected string origin;
+        protected string destination;
+        protected string departureDate;
+        protected string arrivalDate;
+        protected string iataOrigin;
+        protected string iataArrival;
+        protected int passengers;
         protected string currency;
-        protected uint id; 
 
-        public void SetData(string name, DateTime t, uint pass, string curr,uint ident)
+        public string Origin
         {
-            airportName = name;
-            time = t;
-            passengers = pass;
-            currency = curr;
-            iata = SetIata(airportName);
-            id = ident;
+            get { return origin; }
+            set { origin = value; iataOrigin = SetIata(value); }
         }
-        public string Name
+        public string Destination
         {
-            get { return airportName; }
-            set { airportName = value; }
+            get { return destination; }
+            set { destination = value; iataArrival = SetIata(value); }
         }
-        public string AirportIata
+        public string IataOrigin
         {
-            get { return iata; }
-            set { iata = SetIata(value); }
+            get { return iataOrigin; }
         }
-        public DateTime Date
+        public string IataArrival
         {
-            get { return time; }
-            set { time = value; }
+            get { return iataArrival; }
         }
-        public uint PassengerCount
+        public int Passengers
         {
             get { return passengers; }
             set { passengers = value; }
         }
-        public string CurrencyUsed
+        public string DepartureDate
+        {
+            get { return departureDate; }
+            set { departureDate = value; }
+        }
+        public string ArrivalDate
+        {
+            get { return arrivalDate; }
+            set { arrivalDate = value; }
+        }
+        public string Currency
         {
             get { return currency; }
             set { currency = value; }
         }
-        public uint QueryId
-        {
-            get { return id; }
-            set { id = value; }
-        }
         // Convert airfield name into IATA code
-        protected string SetIata(string airportName)
+        public string SetIata(string airportName)
         {
             string connectionString = low_cost.Properties.Settings.Default.iataConnectionString;
-            SqlConnection connect = new SqlConnection(connectionString);
-            SqlCommand query = new SqlCommand("SELECT code FROM iata_airport_codes WHERE airport = " + airportName, connect);
-            SqlDataReader reader = query.ExecuteReader();
-            string iata = reader.GetString(reader.GetOrdinal("code"));
+            string upit = "SELECT code FROM iata_airport_codes WHERE airport = " + "'" + airportName + "'";
+            SqlConnection sqlConnection1 = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader reader;
+
+            cmd.CommandText = upit;
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = sqlConnection1;
+
+            sqlConnection1.Open();
+            reader = cmd.ExecuteReader();
+            reader.Read();
+            string iata = reader.GetString(0);
+            sqlConnection1.Close();
             return iata;
-        }
+            }
     }
     /// <summary>
     /// Creating of an URL string for Amadeus
     /// </summary>
     class CreateUrl
         {
-            protected string url = "http://api.sandbox.amadeus.com/v1.2/flights/low-fare-search?";
+            private string url = "http://api.sandbox.amadeus.com/v1.2/flights/low-fare-search?";
 
-            protected void setString(Airport origin, Airport destination)
+            protected void setString(Airport data)
             {
-                string apikey = "apikey= inser API key" + "&";
-                string ori = "origin=" + origin.AirportIata + "&";
-                string des = "destination=" + destination.AirportIata + "&";
-                string tim = "departure_date=" + origin.Date + "&";
-                string pas = "adults=" + origin.PassengerCount + "&";
-                string sur = "¤cy=" + origin.CurrencyUsed + " HTTP / 1.1";
+                string apikey = "apikey= "+ GetKey() + "&";
+                string ori = "origin=" + data.IataOrigin + "&";
+                string des = "destination=" + data.IataArrival + "&";
+                string tim = "departure_date=" + data.DepartureDate + "&";
+                string pas = "adults=" + data.Passengers + "&";
+                string sur = "¤cy=" + data.Currency + " HTTP / 1.1";
                 url = url + apikey + ori + des + tim + pas + sur;
             }
-            public string GetData()
+            public string Url 
             {
-                return url;
+                get {return url;}
             }
+        protected string GetKey()
+        {
+            BinaryReader reader;
+            try
+            {
+                reader = new BinaryReader(new FileStream("key.bin", FileMode.Open));
+            }
+            catch (IOException excep)
+            {
+                Console.WriteLine(excep.Message);
+                Console.WriteLine("Error openinig file key.bin");
+                return null ;
+            }
+            string key = reader.ReadString();
+            reader.Close();
+            return key;
         }
+         }
     /// <summary>
     /// Compare current query with local database querries
     /// </summary>
     class CompareQuery : CreateUrl
             {
         protected string connectionString = low_cost.Properties.Settings.Default.iataConnectionString;
-        public bool CompareData(Airport origin, Airport destination)
+        public bool CompareData(Airport data)
         {    
             SqlConnection connect = new SqlConnection(connectionString);
             SqlCommand query = new SqlCommand("SELECT Origin, Destination, DateOfTravel, Passengers, Currency FROM QuerryTable", connect);
             SqlDataReader reader = query.ExecuteReader();
             if (reader.HasRows)
             {
-                if (reader.GetString(reader.GetOrdinal("Origin")) != origin.AirportIata)
+                if (reader.GetString(reader.GetOrdinal("Origin")) != data.IataOrigin)
                     return false;
-                if (reader.GetString(reader.GetOrdinal("Destination")) != destination.AirportIata)
+                if (reader.GetString(reader.GetOrdinal("Destination")) != data.IataArrival)
                     return false;
-                if (DateTime.Compare(origin.Date, reader.GetDateTime(reader.GetOrdinal("DateOfTravel"))) != 0)
+                if (string.Compare(data.DepartureDate, reader.GetString(reader.GetOrdinal("DateOfTravel"))) != 0)
                     return false;
-                if (reader.GetInt32(reader.GetOrdinal("Passengers")) != origin.PassengerCount)
+                if (reader.GetInt32(reader.GetOrdinal("Passengers")) != data.Passengers)
                     return false;
-                if (reader.GetString(reader.GetOrdinal("Currency")) != origin.CurrencyUsed)
+                if (reader.GetString(reader.GetOrdinal("Currency")) != data.Currency)
                     return false;
             }
             else
@@ -125,18 +154,17 @@ namespace low_cost
     /// </summary>
     class SaveData : CompareQuery
     {
-        public void SaveQuerylData(Airport origin, Airport destination)
+        public void SaveQuerylData(Airport data)
         {
             SqlConnection connect = new SqlConnection(connectionString);
             SqlCommand query = new SqlCommand("INSERT INTO QueryTable (Origin, Destination, DateOfTravel, Passengers, Currency, ID) VALUES (@Origin, @Destination, @DateOfTravel, @Passengers, @Currency, @ID)");
             query.CommandType = CommandType.Text;
             query.Connection = connect;
-            query.Parameters.AddWithValue("@Origin", origin.AirportIata);
-            query.Parameters.AddWithValue("@Destination", destination.AirportIata);
-            query.Parameters.AddWithValue("@DateOfTravel", origin.Date);
-            query.Parameters.AddWithValue("@Passengers", origin.PassengerCount);
-            query.Parameters.AddWithValue("@Currency", origin.CurrencyUsed);
-            query.Parameters.AddWithValue("@ID", origin.QueryId);
+            query.Parameters.AddWithValue("@Origin", data.IataOrigin);
+            query.Parameters.AddWithValue("@Destination", data.IataArrival);
+            query.Parameters.AddWithValue("@DateOfTravel", data.DepartureDate);
+            query.Parameters.AddWithValue("@Passengers", data.Passengers);
+            query.Parameters.AddWithValue("@Currency", data.Currency);
             connect.Open();
             query.ExecuteNonQuery();
         }
@@ -153,12 +181,12 @@ namespace low_cost
     class SendHttpRequest : CreateUrl
     {
         protected string html = string.Empty;
-        public void send(Airport origin, Airport destination)
+        public void send(Airport data)
         {
-            setString(origin, destination);
+            setString(data);
 
             string html = string.Empty;
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
             request.AutomaticDecompression = DecompressionMethods.GZip;
 
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
@@ -210,4 +238,5 @@ namespace low_cost
             comboBox.DisplayMember = "name";
         }
     }
+
 }

@@ -144,15 +144,15 @@ namespace low_cost
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
+        protected System.Windows.Forms.TextBox textBox1;
         protected System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ComboBox comboBox2;
+        protected System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button sendBtn;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        protected System.Windows.Forms.DateTimePicker dateTimePicker1;
     }
     
 }
