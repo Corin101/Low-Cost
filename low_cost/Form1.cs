@@ -25,7 +25,7 @@ namespace low_cost
             Airport data = new Airport();
             data.Origin = comboBox1.GetItemText(comboBox1.SelectedItem);
             data.Destination = comboBox2.GetItemText(comboBox2.SelectedItem);
-            data.DepartureDate = dateTimePicker1.Value.ToShortDateString().ToString();
+            data.DepartureDate = dateTimePicker1.Value.ToString("yyyy-MM-dd");
             data.Passengers = Int32.Parse(textBox1.Text);
             SendHttpRequest newQuery = new SendHttpRequest();
             newQuery.send(data);

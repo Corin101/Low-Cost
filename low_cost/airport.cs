@@ -89,13 +89,22 @@ namespace low_cost
 
             protected void setString(Airport data)
             {
-                string apikey = "apikey= "+ GetKey() + "&";
+                string apikey = "apikey="+ GetKey() + "&";
                 string ori = "origin=" + data.IataOrigin + "&";
                 string des = "destination=" + data.IataArrival + "&";
                 string tim = "departure_date=" + data.DepartureDate + "&";
                 string pas = "adults=" + data.Passengers + "&";
+                url = url + apikey + ori + des + tim + pas;
+            if (data.Currency != null)
+            {
                 string sur = "¤cy=" + data.Currency + " HTTP / 1.1";
-                url = url + apikey + ori + des + tim + pas + sur;
+                url += sur;
+            }
+            else
+            {
+                url += " HTTP / 1.1";
+            }
+                
             }
             public string Url 
             {
