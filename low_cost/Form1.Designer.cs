@@ -40,11 +40,13 @@ namespace low_cost
             this.label4 = new System.Windows.Forms.Label();
             this.sendBtn = new System.Windows.Forms.Button();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(246, 255);
+            this.textBox1.Location = new System.Drawing.Point(246, 273);
             this.textBox1.Margin = new System.Windows.Forms.Padding(2);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(33, 20);
@@ -53,7 +55,7 @@ namespace low_cost
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(246, 136);
+            this.comboBox1.Location = new System.Drawing.Point(246, 83);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(200, 21);
@@ -62,7 +64,7 @@ namespace low_cost
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(246, 173);
+            this.comboBox2.Location = new System.Drawing.Point(246, 132);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(200, 21);
             this.comboBox2.TabIndex = 3;
@@ -70,7 +72,7 @@ namespace low_cost
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(151, 144);
+            this.label1.Location = new System.Drawing.Point(151, 91);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(34, 13);
             this.label1.TabIndex = 4;
@@ -79,7 +81,7 @@ namespace low_cost
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(150, 181);
+            this.label2.Location = new System.Drawing.Point(151, 135);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(60, 13);
             this.label2.TabIndex = 5;
@@ -88,7 +90,7 @@ namespace low_cost
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(151, 262);
+            this.label3.Location = new System.Drawing.Point(151, 276);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(62, 13);
             this.label3.TabIndex = 6;
@@ -97,11 +99,11 @@ namespace low_cost
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(151, 224);
+            this.label4.Location = new System.Drawing.Point(151, 183);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(30, 13);
+            this.label4.Size = new System.Drawing.Size(80, 13);
             this.label4.TabIndex = 7;
-            this.label4.Text = "Date";
+            this.label4.Text = "Departure Date";
             // 
             // sendBtn
             // 
@@ -115,16 +117,34 @@ namespace low_cost
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(246, 217);
+            this.dateTimePicker1.Location = new System.Drawing.Point(246, 177);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker1.TabIndex = 9;
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Location = new System.Drawing.Point(246, 223);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker2.TabIndex = 10;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(151, 230);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Return Date";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(668, 511);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.dateTimePicker2);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.sendBtn);
             this.Controls.Add(this.label4);
@@ -153,6 +173,8 @@ namespace low_cost
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button sendBtn;
         protected System.Windows.Forms.DateTimePicker dateTimePicker1;
+        protected System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.Label label5;
     }
     
 }

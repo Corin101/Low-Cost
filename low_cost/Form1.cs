@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace low_cost
 {
@@ -26,6 +27,7 @@ namespace low_cost
             data.Origin = comboBox1.GetItemText(comboBox1.SelectedItem);
             data.Destination = comboBox2.GetItemText(comboBox2.SelectedItem);
             data.DepartureDate = dateTimePicker1.Value.ToString("yyyy-MM-dd");
+            data.ReturnDate = dateTimePicker2.Value.ToString("yyy-MM-dd");
             data.Passengers = Int32.Parse(textBox1.Text);
             SendHttpRequest newQuery = new SendHttpRequest();
             newQuery.send(data);

@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Data.SqlClient;
 using System.Data;
+using Newtonsoft.Json;
 using System.Windows.Forms;
 
 namespace low_cost
@@ -15,7 +16,7 @@ namespace low_cost
         protected string origin;
         protected string destination;
         protected string departureDate;
-        protected string arrivalDate;
+        protected string returnDate;
         protected string iataOrigin;
         protected string iataArrival;
         protected int passengers;
@@ -49,10 +50,10 @@ namespace low_cost
             get { return departureDate; }
             set { departureDate = value; }
         }
-        public string ArrivalDate
+        public string ReturnDate
         {
-            get { return arrivalDate; }
-            set { arrivalDate = value; }
+            get { return returnDate; }
+            set { returnDate = value; }
         }
         public string Currency
         {
@@ -85,24 +86,26 @@ namespace low_cost
     /// </summary>
     class CreateUrl
         {
-            private string url = "http://api.sandbox.amadeus.com/v1.2/flights/low-fare-search?";
+            private string url = "https://api.sandbox.amadeus.com/v1.2/flights/low-fare-search?";
 
             protected void setString(Airport data)
             {
                 string apikey = "apikey="+ GetKey() + "&";
                 string ori = "origin=" + data.IataOrigin + "&";
                 string des = "destination=" + data.IataArrival + "&";
-                string tim = "departure_date=" + data.DepartureDate + "&";
+                string timDep = "departure_date=" + data.DepartureDate + "&";
+                string timRet = "return_date=" + data.ReturnDate + "&";
                 string pas = "adults=" + data.Passengers + "&";
-                url = url + apikey + ori + des + tim + pas;
+                string number_of_results = "number_of_results=5";
+                url = url + apikey + ori + des + timDep + timRet + pas;
             if (data.Currency != null)
             {
                 string sur = "¤cy=" + data.Currency + " HTTP / 1.1";
-                url += sur;
+                url += sur + number_of_results;
             }
             else
             {
-                url += " HTTP / 1.1";
+                url += number_of_results;
             }
                 
             }
@@ -190,6 +193,7 @@ namespace low_cost
     class SendHttpRequest : CreateUrl
     {
         protected string html = string.Empty;
+        public string Html { get { return html; }}
         public void send(Airport data)
         {
             setString(data);
@@ -211,8 +215,10 @@ namespace low_cost
     /// </summary>
     class ParseData : SendHttpRequest
     {
-        //parse relevant data
-        // transform json data into c# class data
+        public void Parse()
+        {
+           RootObject test = JsonConvert.DeserializeObject<RootObject>(Html);
+        }
     }
     /// <summary>
     /// Displays the data
