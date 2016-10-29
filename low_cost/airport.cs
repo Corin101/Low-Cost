@@ -238,9 +238,8 @@ namespace low_cost
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
             DataSet ds = new DataSet();
-            string sql = null;
+            string sql = "select airport AS name from iata_airport_codes";
             connetionString = low_cost.Properties.Settings.Default.iataConnectionString;
-            sql = "select airport AS name from iata_airport_codes";
             connection = new SqlConnection(connetionString);
             connection.Open();
             command = new SqlCommand(sql, connection);
