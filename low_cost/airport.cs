@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Data;
 using Newtonsoft.Json;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace low_cost
 {
@@ -192,13 +193,12 @@ namespace low_cost
     /// </summary>
     class SendHttpRequest : CreateUrl
     {
-        protected string html = string.Empty;
+        protected string html;
         public string Html { get { return html; }}
         public void send(Airport data)
         {
             setString(data);
 
-            string html = string.Empty;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
             request.AutomaticDecompression = DecompressionMethods.GZip;
 
@@ -209,17 +209,14 @@ namespace low_cost
                 html = reader.ReadToEnd();
             }
         }
-    }
-    /// <summary>
-    /// Parsing of collected result into relevat data
-    /// </summary>
-    class ParseData : SendHttpRequest
-    {
         public void Parse()
         {
-           RootObject test = JsonConvert.DeserializeObject<RootObject>(Html);
+            //RootObject test = new RootObject();
+            var test = JsonConvert.DeserializeObject<RootObject>(html);
+
         }
     }
+
     /// <summary>
     /// Displays the data
     /// </summary>

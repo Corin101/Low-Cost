@@ -17,6 +17,7 @@ namespace low_cost
         public Form1()
         {
             InitializeComponent();
+            this.Size = new Size(650, 450);
             LoadComboBox.Set(ref comboBox1);
             LoadComboBox.Set(ref comboBox2);
 
@@ -31,6 +32,10 @@ namespace low_cost
             data.Passengers = Int32.Parse(textBox1.Text);
             SendHttpRequest newQuery = new SendHttpRequest();
             newQuery.send(data);
+            this.Hide();
+            Form Form2 = new Form();
+            newQuery.Parse();
+            Form2.ShowDialog();
         }                                               
     }
 }
