@@ -27,6 +27,7 @@ namespace low_cost
         }
         private void Form2_Load(object sender, EventArgs e)
         {
+            dataGridView1.Rows.Add(4);
             for (int i = 0; i != answer.results.Count; ++i)
             {
                 dataGridView1.Rows[i].Cells[0].Value = answer.results[i].itineraries[0].inbound.flights[0].origin.airport;
@@ -36,7 +37,7 @@ namespace low_cost
                 dataGridView1.Rows[i].Cells[4].Value = noPassengers.ToString();
                 dataGridView1.Rows[i].Cells[5].Value = answer.currency;
                 dataGridView1.Rows[i].Cells[6].Value = answer.results[i].fare.total_price;
-                dataGridView1.Rows.Add();
+
             }
         }
 
