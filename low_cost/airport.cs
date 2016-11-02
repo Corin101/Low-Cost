@@ -12,7 +12,7 @@ namespace low_cost
     /// <summary>
     /// Origin and Destination data
     /// </summary>
-    class Airport
+    public class Airport : Form1
     {
         protected string origin;
         protected string destination;
@@ -80,12 +80,12 @@ namespace low_cost
             string iata = reader.GetString(0);
             sqlConnection1.Close();
             return iata;
-            }
+        }
     }
     /// <summary>
     /// Creating of an URL string for Amadeus
     /// </summary>
-    class CreateUrl
+    public class CreateUrl
         {
             private string url = "https://api.sandbox.amadeus.com/v1.2/flights/low-fare-search?";
 
@@ -135,7 +135,7 @@ namespace low_cost
     /// <summary>
     /// Compare current query with local database querries
     /// </summary>
-    class CompareQuery : CreateUrl
+    public class CompareQuery : CreateUrl
             {
         protected string connectionString = low_cost.Properties.Settings.Default.iataConnectionString;
         public bool CompareData(Airport data)
@@ -165,7 +165,7 @@ namespace low_cost
     /// Save query to database. 
     /// Save results from Amadeus to database
     /// </summary>
-    class SaveData : CompareQuery
+   public class SaveData : CompareQuery
     {
         public void SaveQuerylData(Airport data)
         {
@@ -191,10 +191,11 @@ namespace low_cost
     /// <summary>
     /// Send query to Amadeus, receive query result from Amadeus
     /// </summary>
-    class SendHttpRequest : CreateUrl
+    public class SendHttpRequest : CreateUrl
     {
         protected string html;
-        public string Html { get { return html; }}
+        protected DataTable dt;
+        public string Html { get { return html; } }
         public void send(Airport data)
         {
             setString(data);
@@ -209,23 +210,15 @@ namespace low_cost
                 html = reader.ReadToEnd();
             }
         }
-        public void Parse()
+        public RootObject Parse()
         {
-            //RootObject test = new RootObject();
-            var test = JsonConvert.DeserializeObject<RootObject>(html);
 
+            RootObject test = JsonConvert.DeserializeObject<RootObject>(html);
+            return test;
         }
+
     }
 
-    /// <summary>
-    /// Displays the data
-    /// </summary>
-    class DisplayData
-    {
-        //  TODO
-        //     Display data from local db
-        //     concept: get id from query, get saved data by id, display it
-    }
     static class LoadComboBox
     {
         public static void Set(ref System.Windows.Forms.ComboBox comboBox)

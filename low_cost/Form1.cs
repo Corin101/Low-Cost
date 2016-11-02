@@ -14,6 +14,8 @@ namespace low_cost
 {
     public partial class Form1 : Form
     {
+        RootObject answer;
+        public RootObject Answer() { return answer; }
         public Form1()
         {
             InitializeComponent();
@@ -25,17 +27,22 @@ namespace low_cost
         private void button1_Click(object sender, EventArgs e)
         {
             Airport data = new Airport();
+            SendHttpRequest newQuery = new SendHttpRequest();
+
             data.Origin = comboBox1.GetItemText(comboBox1.SelectedItem);
             data.Destination = comboBox2.GetItemText(comboBox2.SelectedItem);
             data.DepartureDate = dateTimePicker1.Value.ToString("yyyy-MM-dd");
             data.ReturnDate = dateTimePicker2.Value.ToString("yyy-MM-dd");
             data.Passengers = Int32.Parse(textBox1.Text);
-            SendHttpRequest newQuery = new SendHttpRequest();
+
             newQuery.send(data);
-            this.Hide();
-            Form Form2 = new Form();
             newQuery.Parse();
-            Form2.ShowDialog();
-        }                                               
+            answer = newQuery.Parse();
+            Form2 Form2 = new Form2(answer, data.Passengers);
+            Form2.Show();
+
+
+        }
+                                          
     }
 }
